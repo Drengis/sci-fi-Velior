@@ -197,12 +197,131 @@
                     }
                 ]
             }
+        },
+        "/api/static/armor": {
+            "get": {
+                "tags": [
+                    "Static",
+                    "Armor"
+                ],
+                "summary": "Получить всю броню",
+                "operationId": "1b0004f50e389078b37c32bcd144260a",
+                "responses": {
+                    "200": {
+                        "description": "Список брони",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Titan Armor"
+                                            },
+                                            "upgrade_slots": {
+                                                "type": "integer",
+                                                "example": 3
+                                            },
+                                            "descripsion": {
+                                                "type": "string",
+                                                "example": "Heavy sci-fi armor"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/static/armor/{id}": {
+            "get": {
+                "tags": [
+                    "Static",
+                    "Armor"
+                ],
+                "summary": "Получить броню по ID",
+                "operationId": "55c18c5f55694e41311a8969d268c3d8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID брони",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные брони",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Titan Armor"
+                                        },
+                                        "upgrade_slots": {
+                                            "type": "integer",
+                                            "example": 3
+                                        },
+                                        "descripsion": {
+                                            "type": "string",
+                                            "example": "Heavy sci-fi armor"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Броня не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Armor not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Static",
+            "description": "Static"
+        },
+        {
+            "name": "Armor",
+            "description": "Armor"
         }
     ]
 }
