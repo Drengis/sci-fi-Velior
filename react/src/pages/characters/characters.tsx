@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
+import { NavLink } from "react-router-dom";
 
 // Пример данных (потом можно заменить на API)
 const characters = [
@@ -31,7 +32,9 @@ export default function Characters() {
               {char.description}
             </CardContent>
             <CardFooter>
-              <Button variant="outline">Подробнее</Button>
+              <NavLink to={"/characters/skilltree"}>
+                <Button variant="outline">Подробнее</Button>
+              </NavLink>
             </CardFooter>
           </Card>
         ))}
