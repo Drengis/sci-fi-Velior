@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Controllers\AuthController;
+use App\Http\Controllers\AuthController;
 
 // Префикс "auth" для всех маршрутов авторизации
 Route::prefix('auth')->group(function () {

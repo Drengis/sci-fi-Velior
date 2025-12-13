@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Http\Controllers;
 
-use App\Controllers\BaseController;
+use App\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\AuthService;
@@ -21,8 +21,35 @@ class AuthController extends BaseController
         return $this->authService;
     }
 
+    protected function getValidationRules(bool $forCreate = true): array
+    {
+        return [];
+    }
+
     /**
-     * Регистрация пользователя
+     * @OA\Post(
+     *     path="/api/auth/register",
+     *     summary="Регистрация пользователя",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name","email","password"},
+     *             @OA\Property(property="name", type="string", example="Alex"),
+     *             @OA\Property(property="email", type="string", example="alex@mail.com"),
+     *             @OA\Property(property="password", type="string", example="12345678")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Успешная регистрация",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(property="user", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(response=422, description="Ошибка регистрации")
+     * )
      */
     public function register(Request $request): JsonResponse
     {
@@ -40,7 +67,29 @@ class AuthController extends BaseController
     }
 
     /**
-     * Логин
+     * @OA\Post(
+     *     path="/api/auth/login",
+     *     summary="Авторизация пользователя",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","password"},
+     *             @OA\Property(property="email", type="string", example="alex@mail.com"),
+     *             @OA\Property(property="password", type="string", example="12345678")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешная авторизация",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string"),
+     *             @OA\Property(property="user", type="object"),
+     *             @OA\Property(property="token", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(response=401, description="Неверный email или пароль")
+     * )
      */
     public function login(Request $request): JsonResponse
     {
@@ -66,7 +115,19 @@ class AuthController extends BaseController
     }
 
     /**
-     * Выход (удаление токена)
+     * @OA\Post(
+     *     path="/api/auth/logout",
+     *     summary="Выход пользователя (удаление токена)",
+     *     tags={"Auth"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Успешный выход",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string")
+     *         )
+     *     )
+     * )
      */
     public function logout(Request $request): JsonResponse
     {
@@ -78,7 +139,19 @@ class AuthController extends BaseController
     }
 
     /**
-     * Получить текущего пользователя
+     * @OA\Get(
+     *     path="/api/auth/me",
+     *     summary="Получить текущего пользователя",
+     *     tags={"Auth"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Информация о текущем пользователе",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="user", type="object")
+     *         )
+     *     )
+     * )
      */
     public function me(Request $request): JsonResponse
     {
