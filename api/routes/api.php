@@ -21,9 +21,9 @@ Route::prefix('auth')->group(function () {
 
 
 Route::prefix('static')->group(function () {
-
     Route::get('/armor', [StaticGameDataController::class, 'index_armor']);
-
     Route::get('/armor/{id}', [StaticGameDataController::class, 'show_armor']);
 
+    Route::get('/melee-weapon', [StaticGameDataController::class, 'index_melee_weapon']);
+    Route::get('/melee-weapon/{id}', [StaticGameDataController::class, 'show_melee_weapon']);
 });

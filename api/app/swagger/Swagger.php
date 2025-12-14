@@ -14,7 +14,7 @@ namespace App\Swagger;
  * )
  *
  * @OA\Server(
- *     url="/api",
+ *     url="",
  *     description="Основной сервер API"
  * )
  */
