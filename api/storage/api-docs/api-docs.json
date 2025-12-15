@@ -431,6 +431,115 @@
                     }
                 }
             }
+        },
+        "/api/static/range-weapon": {
+            "get": {
+                "tags": [
+                    "Static"
+                ],
+                "summary": "Получить всё дальнобойное оружие",
+                "operationId": "69a00c181e0c07cc696ce4e5f464bd9a",
+                "responses": {
+                    "200": {
+                        "description": "Список дальнобойного оружия",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Слабое"
+                                            },
+                                            "armor_penetration": {
+                                                "type": "string",
+                                                "example": "MK1"
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "Пистолеты, ПП"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/static/range-weapon/{id}": {
+            "get": {
+                "tags": [
+                    "Static"
+                ],
+                "summary": "Получить дальнобойное оружие по ID",
+                "operationId": "056129f4a4f062b53a32c9d70c517eda",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID оружия",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные дальнобойного оружия",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "Слабое"
+                                        },
+                                        "armor_penetration": {
+                                            "type": "string",
+                                            "example": "MK1"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Пистолеты, ПП"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Оружие не найдено",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "range weapon not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [

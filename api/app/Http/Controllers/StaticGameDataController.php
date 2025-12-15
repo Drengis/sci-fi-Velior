@@ -152,4 +152,77 @@ class StaticGameDataController extends Controller
 
         return response()->json($weapon);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/static/range-weapon",
+     *     summary="Получить всё дальнобойное оружие",
+     *     tags={"Static"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Список дальнобойного оружия",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="title", type="string", example="Слабое"),
+     *                 @OA\Property(property="armor_penetration", type="string", example="MK1"),
+     *                 @OA\Property(property="description", type="string", example="Пистолеты, ПП")
+     *             )
+     *         )
+     *     )
+     * )
+     */
+    public function index_range_weapon(): JsonResponse
+    {
+        return response()->json(
+            StaticGameDataService::range_weapon()
+        );
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/static/range-weapon/{id}",
+     *     summary="Получить дальнобойное оружие по ID",
+     *     tags={"Static"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID оружия",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Данные дальнобойного оружия",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="title", type="string", example="Слабое"),
+     *             @OA\Property(property="armor_penetration", type="string", example="MK1"),
+     *             @OA\Property(property="description", type="string", example="Пистолеты, ПП")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Оружие не найдено",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="range weapon not found")
+     *         )
+     *     )
+     * )
+     */
+    public function show_range_weapon(int $id): JsonResponse
+    {
+        $weapon = StaticGameDataService::range_weaponById($id);
+
+        if (!$weapon) {
+            return response()->json([
+                'message' => 'range weapon not found'
+            ], 404);
+        }
+
+        return response()->json($weapon);
+    }
+
+
 }

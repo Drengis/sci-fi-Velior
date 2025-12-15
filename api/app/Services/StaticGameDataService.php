@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Armor;
 use App\Models\MeleeWeapon;
+use App\Models\RangeWeapon;
 use Illuminate\Support\Collection;
 
 class StaticGameDataService
@@ -39,6 +40,23 @@ class StaticGameDataService
     {
         return MeleeWeapon::query()->find($id);
     }
+
+     /**
+     * Все мили оружия
+     */
+    public static function range_weapon(): Collection
+    {
+        return RangeWeapon::query()->get();
+    }
+
+    /**
+     * Броня по ID
+     */
+    public static function range_weaponById(int $id): ?RangeWeapon
+    {
+        return RangeWeapon::query()->find($id);
+    }
+
 
 
 }
