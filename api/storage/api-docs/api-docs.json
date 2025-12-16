@@ -198,6 +198,394 @@
                 ]
             }
         },
+        "/api/characters": {
+            "get": {
+                "tags": [
+                    "Characters"
+                ],
+                "summary": "Получить список всех персонажей",
+                "operationId": "1797cf6529aea596ae858da8b98f8eff",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Количество записей на страницу",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 15
+                        }
+                    },
+                    {
+                        "name": "with",
+                        "in": "query",
+                        "description": "Связи для подгрузки через запятую",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "user"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список персонажей",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Character"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Characters"
+                ],
+                "summary": "Создать нового персонажа",
+                "operationId": "9add7f48e7bda366ab508aeba92327a8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Тарисса Нал"
+                                    },
+                                    "class": {
+                                        "type": "string",
+                                        "example": "Stormcaller"
+                                    },
+                                    "race": {
+                                        "type": "string",
+                                        "example": "Human"
+                                    },
+                                    "background": {
+                                        "type": "string",
+                                        "example": "Wanderer"
+                                    },
+                                    "traits": {
+                                        "type": "string",
+                                        "example": "Impulsive, brave"
+                                    },
+                                    "ideals": {
+                                        "type": "string",
+                                        "example": "Freedom"
+                                    },
+                                    "attachments": {
+                                        "type": "string",
+                                        "example": "Old amulet"
+                                    },
+                                    "weaknesses": {
+                                        "type": "string",
+                                        "example": "Overconfidence"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Персонаж создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Character"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/characters/{id}": {
+            "get": {
+                "tags": [
+                    "Characters"
+                ],
+                "summary": "Получить персонажа по ID",
+                "operationId": "cee1db67df83aac46e9d3a42d3ad8cb7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID персонажа",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные персонажа",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Character"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Персонаж не найден",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Character not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Characters"
+                ],
+                "summary": "Обновить персонажа",
+                "operationId": "46de201ac19b25577e1991a8c8f2abed",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID персонажа",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Тарисса Нал"
+                                    },
+                                    "class": {
+                                        "type": "string",
+                                        "example": "Warrior"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Персонаж обновлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Character"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Characters"
+                ],
+                "summary": "Удалить персонажа",
+                "operationId": "edc953591ab1fe3ba471b74b0abd718a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID персонажа",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Персонаж удален"
+                    }
+                }
+            }
+        },
+        "/api/users/{userId}/characters": {
+            "get": {
+                "tags": [
+                    "Characters"
+                ],
+                "summary": "Получить всех персонажей пользователя",
+                "description": "Получить всех персонажей конкретного пользователя",
+                "operationId": "27f94a2ef47d839af2e38bcfd886547f",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "ID пользователя",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список персонажей пользователя",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Character"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/characters/search": {
+            "get": {
+                "tags": [
+                    "Characters"
+                ],
+                "summary": "Найти персонажей по имени",
+                "description": "Найти персонажа по имени",
+                "operationId": "ef26164081531f9589207e777f1c2c7b",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Имя персонажа для поиска",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Тарисса"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Найденные персонажи",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Character"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/static/armor": {
             "get": {
                 "tags": [
@@ -542,7 +930,62 @@
             }
         }
     },
+    "components": {
+        "schemas": {
+            "Character": {
+                "title": "Character",
+                "description": "Модель персонажа",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Тарисса Нал"
+                    },
+                    "class": {
+                        "type": "string",
+                        "example": "Stormcaller"
+                    },
+                    "race": {
+                        "type": "string",
+                        "example": "Human"
+                    },
+                    "background": {
+                        "type": "string",
+                        "example": "Wanderer"
+                    },
+                    "traits": {
+                        "type": "string",
+                        "example": "Impulsive, brave"
+                    },
+                    "ideals": {
+                        "type": "string",
+                        "example": "Freedom"
+                    },
+                    "attachments": {
+                        "type": "string",
+                        "example": "Old amulet"
+                    },
+                    "weaknesses": {
+                        "type": "string",
+                        "example": "Overconfidence"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
     "tags": [
+        {
+            "name": "Characters",
+            "description": "API для работы с персонажами"
+        },
         {
             "name": "Auth",
             "description": "Auth"
