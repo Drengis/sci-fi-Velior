@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styles from "./registration.module.css";
 
 import {
@@ -13,7 +14,61 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export default function Registration() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async () => {
+    setError(null);
+
+    if (!name || !email || !password) {
+      setError("Заполните все поля");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Пароли не совпадают");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(`${apiUrl}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Ошибка регистрации");
+      }
+
+      // если сервер что-то возвращает
+      const result = await response.json();
+      console.log("Успешная регистрация:", result);
+
+      // TODO: редирект / логин / уведомление
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Неизвестная ошибка");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={styles.registration}>
       <Card className={styles.card}>
@@ -27,7 +82,13 @@ export default function Registration() {
         <CardContent className={styles.content}>
           <div className={styles.field}>
             <Label htmlFor="name">Имя</Label>
-            <Input id="name" type="text" placeholder="Ваше имя" />
+            <Input
+              id="name"
+              type="text"
+              placeholder="Ваше имя"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
 
           <div className={styles.field}>
@@ -36,6 +97,8 @@ export default function Registration() {
               id="email"
               type="email"
               placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -45,6 +108,8 @@ export default function Registration() {
               id="password"
               type="password"
               placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
@@ -54,13 +119,25 @@ export default function Registration() {
               id="confirmPassword"
               type="password"
               placeholder="••••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
+
+          {error && (
+            <p className={styles.error}>
+              {error}
+            </p>
+          )}
         </CardContent>
 
         <CardFooter className={styles.footer}>
-          <Button className={styles.submit}>
-            Зарегистрироваться
+          <Button
+            className={styles.submit}
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? "Регистрация..." : "Зарегистрироваться"}
           </Button>
         </CardFooter>
       </Card>
