@@ -13,14 +13,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-const apiUrl = import.meta.env.VITE_API_URL;
-
-interface ArmorDto {
-  id: number;
-  name: string;
-  "upgrade slots": number;
-  descripsion: string;
-}
+import { staticApi } from "../../api/static.api";
+import type { ArmorDto } from "../../dto/static.dto";
 
 export default function Armor() {
   const [armors, setArmors] = useState<ArmorDto[]>([]);
@@ -30,9 +24,7 @@ export default function Armor() {
   useEffect(() => {
     const loadArmors = async () => {
       try {
-        const response = await fetch(`${apiUrl}/static/armor`);
-        if (!response.ok) throw new Error("Ошибка загрузки брони");
-        const data: ArmorDto[] = await response.json();
+        const data = await staticApi.getArmors();
         setArmors(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Неизвестная ошибка");

@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const apiUrl = import.meta.env.VITE_API_URL;
+import { authApi } from "../../api/auth.api";
 
 export default function Registration() {
   const [name, setName] = useState("");
@@ -40,25 +40,12 @@ export default function Registration() {
     try {
       setLoading(true);
 
-      const response = await fetch(`${apiUrl}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
+      const result = await authApi.register({
+        name,
+        email,
+        password,
       });
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Ошибка регистрации");
-      }
-
-      // если сервер что-то возвращает
-      const result = await response.json();
       console.log("Успешная регистрация:", result);
 
       // TODO: редирект / логин / уведомление

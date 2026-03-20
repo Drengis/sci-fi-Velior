@@ -11,44 +11,22 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const apiUrl = import.meta.env.VITE_API_URL;
-
-interface MeleeWeapon {
-  id: number;
-  title: string;
-  vs_MK1: string;
-  vs_MK2: string;
-  vs_MK3: string;
-  vs_MK4: string;
-}
-
-interface RangeWeapon {
-  id: number;
-  title: string;
-  armor_penetration: string;
-  description: string;
-}
+import { staticApi } from "../../api/static.api";
+import type { MeleeWeaponDto, RangeWeaponDto } from "../../dto/static.dto";
 
 export default function Weapons() {
-  const [meleeWeapons, setMeleeWeapons] = useState<MeleeWeapon[]>([]);
-  const [rangeWeapons, setRangeWeapons] = useState<RangeWeapon[]>([]);
+  const [meleeWeapons, setMeleeWeapons] = useState<MeleeWeaponDto[]>([]);
+  const [rangeWeapons, setRangeWeapons] = useState<RangeWeaponDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadWeapons = async () => {
       try {
-        const [meleeRes, rangeRes] = await Promise.all([
-          fetch(`${apiUrl}/static/melee-weapon`),
-          fetch(`${apiUrl}/static/range-weapon`),
+        const [meleeData, rangeData] = await Promise.all([
+          staticApi.getMeleeWeapons(),
+          staticApi.getRangeWeapons(),
         ]);
-
-        if (!meleeRes.ok || !rangeRes.ok) {
-          throw new Error("Ошибка загрузки оружия");
-        }
-
-        const meleeData: MeleeWeapon[] = await meleeRes.json();
-        const rangeData: RangeWeapon[] = await rangeRes.json();
 
         setMeleeWeapons(meleeData);
         setRangeWeapons(rangeData);

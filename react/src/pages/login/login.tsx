@@ -16,8 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { useAuthStore } from "../../store/authStore";
-
-const apiUrl = import.meta.env.VITE_API_URL;
+import { authApi } from "../../api/auth.api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -38,27 +37,10 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const response = await fetch(`${apiUrl}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+      const data = await authApi.login({
+        email,
+        password,
       });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Ошибка авторизации");
-      }
-
-      const data: {
-        message: string;
-        user: any;
-        token: string;
-      } = await response.json();
 
       login({
         token: data.token,
