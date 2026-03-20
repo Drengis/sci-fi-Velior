@@ -3,12 +3,12 @@ import type { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } f
 
 export const authApi = {
   login: async (data: LoginRequest): Promise<LoginResponse> => {
-    const response = await axiosClient.post<LoginResponse>("/auth/login", data);
-    return response.data;
+    const response = await axiosClient.post<{ data: LoginResponse }>("/auth/login", data);
+    return response.data.data;
   },
 
   register: async (data: RegisterRequest): Promise<RegisterResponse> => {
-    const response = await axiosClient.post<RegisterResponse>("/auth/register", data);
-    return response.data;
+    const response = await axiosClient.post<{ data: RegisterResponse }>("/auth/register", data);
+    return response.data.data;
   },
 };

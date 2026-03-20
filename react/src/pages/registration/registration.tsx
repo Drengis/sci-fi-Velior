@@ -16,7 +16,11 @@ import { Label } from "@/components/ui/label";
 
 import { authApi } from "../../api/auth.api";
 
-export default function Registration() {
+interface RegistrationProps {
+  onSuccess?: () => void;
+}
+
+export default function Registration({ onSuccess }: RegistrationProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,8 +51,7 @@ export default function Registration() {
       });
 
       console.log("Успешная регистрация:", result);
-
-      // TODO: редирект / логин / уведомление
+      onSuccess?.();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Неизвестная ошибка");
     } finally {

@@ -18,13 +18,10 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-Route::middleware('auth:sanctum')->prefix('characters')->group(function () {
-    Route::get('/', [CharacterController::class, 'index']);        // список всех
-    Route::get('/search', [CharacterController::class, 'search']); // поиск по имени
-    Route::get('/{id}', [CharacterController::class, 'show']);     // получить по ID
-    Route::post('/', [CharacterController::class, 'store']);       // создать
-    Route::put('/{id}', [CharacterController::class, 'update']);   // обновить
-    Route::delete('/{id}', [CharacterController::class, 'destroy']); // удалить
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('characters', CharacterController::class);
 });
 
 Route::middleware('auth:sanctum')->get('/users/{userId}/characters', [CharacterController::class, 'getByUser']);

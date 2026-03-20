@@ -253,7 +253,7 @@ class CharacterController extends BaseController
         $characters = $this->service->getByUserId(
             userId: $userId,
             relations: is_array($relations) ? $relations : explode(',', $relations),
-            paginate: true,
+            paginate: false,
             perPage: $perPage
         );
 

@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./login.module.css";
 
 import {
@@ -18,12 +18,17 @@ import { Label } from "@/components/ui/label";
 import { useAuthStore } from "../../store/authStore";
 import { authApi } from "../../api/auth.api";
 
-export default function Login() {
+interface LoginProps {
+  onSuccess?: () => void;
+}
+
+export default function Login({ onSuccess }: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
 
   const handleLogin = async () => {
@@ -47,7 +52,8 @@ export default function Login() {
         user: data.user,
       });
 
-      // TODO: редирект на dashboard
+      navigate("/characters");
+      onSuccess?.();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Неизвестная ошибка");
     } finally {
