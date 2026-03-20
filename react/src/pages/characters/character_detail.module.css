@@ -15,7 +15,7 @@
     padding: 3rem;
     border-radius: var(--radius-xl);
     border: 1px solid var(--border);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 /* Header Styles */
@@ -125,16 +125,35 @@
 
 .personalityBox:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .boxContent {
     padding: 1.25rem;
     font-size: 1rem;
     line-height: 1.6;
-    min-height: 80px;
+    min-height: 110px;
+    position: relative;
+    z-index: 1;
     color: var(--foreground);
-    background: var(--background);
+}
+
+.lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    opacity: 0.3;
+}
+
+.line {
+    flex: 1;
+    border-bottom: 1px solid var(--muted-foreground);
 }
 
 .boxFooter {
@@ -154,7 +173,8 @@
     text-transform: uppercase;
 }
 
-.loading, .error {
+.loading,
+.error {
     padding: 4rem;
     text-align: center;
     font-size: 1.5rem;
