@@ -41,8 +41,7 @@ class Character extends Model
         'weaknesses',
     ];
 
-    // Если нет created_at / updated_at
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function user()
     {
