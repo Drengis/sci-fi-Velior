@@ -21,7 +21,7 @@ class StaticGameDataController extends Controller
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Titan Armor"),
      *                 @OA\Property(property="upgrade_slots", type="integer", example=3),
-     *                 @OA\Property(property="descripsion", type="string", example="Heavy sci-fi armor")
+     *                 @OA\Property(property="description", type="string", example="Heavy sci-fi armor")
      *             )
      *         )
      *     )
@@ -53,7 +53,7 @@ class StaticGameDataController extends Controller
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="name", type="string", example="Titan Armor"),
      *                 @OA\Property(property="upgrade_slots", type="integer", example=3),
-     *                 @OA\Property(property="descripsion", type="string", example="Heavy sci-fi armor")
+     *                 @OA\Property(property="description", type="string", example="Heavy sci-fi armor")
      *         )
      *     ),
      *     @OA\Response(

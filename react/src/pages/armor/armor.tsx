@@ -58,8 +58,8 @@ export default function Armor() {
           {armors.map((armor) => (
             <TableRow key={armor.id}>
               <TableCell>{armor.name}</TableCell>
-              <TableCell>{armor.descripsion}</TableCell>
-              <TableCell>{armor["upgrade slots"]}</TableCell>
+              <TableCell>{armor.description}</TableCell>
+              <TableCell>{armor.upgrade_slots}</TableCell>
               <TableCell>
                 <Button variant="outline" size="sm">
                   Подробнее

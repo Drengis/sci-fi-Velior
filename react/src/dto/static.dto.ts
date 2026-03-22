@@ -17,6 +17,6 @@ export interface RangeWeaponDto {
 export interface ArmorDto {
   id: number;
   name: string;
-  "upgrade slots": number;
-  descripsion: string;
+  upgrade_slots: number;
+  description: string;
 }

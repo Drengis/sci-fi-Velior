@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('range_weapons', function (Blueprint $table) {
             $table->id();
             $table->string('title', 45);
-            $table->string('armor_penetration', 45);
-            $table->string('description');
+            $table->string('armor_penetration', 45)->nullable();
+            $table->string('description')->nullable();
         });
     }
 

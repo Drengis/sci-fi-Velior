@@ -11,7 +11,7 @@ class Armor extends Model
     protected $fillable = [
         'name',
         'upgrade_slots',
-        'descripsion',
+        'description',
     ];
 
     public $timestamps = false;

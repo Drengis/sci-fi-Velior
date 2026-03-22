@@ -22,9 +22,11 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('characters', CharacterController::class);
+    
+    Route::get('/users/{userId}/characters', [CharacterController::class, 'getByUser']);
 });
 
-Route::middleware('auth:sanctum')->get('/users/{userId}/characters', [CharacterController::class, 'getByUser']);
+
 
 Route::prefix('static')->group(function () {
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 45);
             $table->integer('upgrade_slots');
-            $table->text('descripsion');
+            $table->text('description')->nullable();
         });
     }
 

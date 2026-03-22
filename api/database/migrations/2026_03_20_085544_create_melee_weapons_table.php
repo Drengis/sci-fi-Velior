@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('melee_weapons', function (Blueprint $table) {
             $table->id();
             $table->string('title', 45);
-            $table->string('vs_MK1', 45);
-            $table->string('vs_MK2', 45);
-            $table->string('vs_MK3', 45);
-            $table->string('vs_MK4', 45);
+            $table->string('vs_MK1', 45)->nullable();
+            $table->string('vs_MK2', 45)->nullable();
+            $table->string('vs_MK3', 45)->nullable();
+            $table->string('vs_MK4', 45)->nullable();
         });
     }
 
