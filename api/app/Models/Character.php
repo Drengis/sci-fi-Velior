@@ -20,7 +20,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *     @OA\Property(property="traits", type="string", example="Impulsive, brave"),
  *     @OA\Property(property="ideals", type="string", example="Freedom"),
  *     @OA\Property(property="attachments", type="string", example="Old amulet"),
- *     @OA\Property(property="weaknesses", type="string", example="Overconfidence")
+ *     @OA\Property(property="weaknesses", type="string", example="Overconfidence"),
+ *     @OA\Property(property="strength", type="integer", example=10),
+ *     @OA\Property(property="dexterity", type="integer", example=10),
+ *     @OA\Property(property="constitution", type="integer", example=10),
+ *     @OA\Property(property="intelligence", type="integer", example=10),
+ *     @OA\Property(property="wisdom", type="integer", example=10),
+ *     @OA\Property(property="charisma", type="integer", example=10)
  * )
  */
 class Character extends Model
@@ -39,6 +45,12 @@ class Character extends Model
         'ideals',
         'attachments',
         'weaknesses',
+        'strength',
+        'dexterity',
+        'constitution',
+        'intelligence',
+        'wisdom',
+        'charisma',
     ];
 
     public $timestamps = true;
@@ -46,5 +58,25 @@ class Character extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Расчет модификатора характеристики
+     */
+    public static function getModifier(int $score): int
+    {
+        return floor(($score - 10) / 2);
+    }
+
+    public function getModifiers(): array
+    {
+        return [
+            'strength' => self::getModifier($this->strength),
+            'dexterity' => self::getModifier($this->dexterity),
+            'constitution' => self::getModifier($this->constitution),
+            'intelligence' => self::getModifier($this->intelligence),
+            'wisdom' => self::getModifier($this->wisdom),
+            'charisma' => self::getModifier($this->charisma),
+        ];
     }
 }

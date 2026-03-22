@@ -73,6 +73,16 @@ export default function CharacterDetail() {
 
                 {/* Content */}
                 <main className={styles.mainContent}>
+
+                    <div className={styles.statsContainer}>
+                        <StatsBox title="Сила" stat={character.strength} />
+                        <StatsBox title="Ловкость" stat={character.dexterity} />
+                        <StatsBox title="Телосложение" stat={character.constitution} />
+                        <StatsBox title="Интеллект" stat={character.intelligence} />
+                        <StatsBox title="Мудрость" stat={character.wisdom} />
+                        <StatsBox title="Харизма" stat={character.charisma} />
+                    </div>
+
                     <div className={styles.personalitySection}>
                         <PersonalityBox title="ЧЕРТЫ ХАРАКТЕРА" content={character.traits} />
                         <PersonalityBox title="ИДЕАЛЫ" content={character.ideals} />
@@ -94,6 +104,22 @@ function PersonalityBox({ title, content }: { title: string; content?: string })
             </div>
             <div className={styles.boxFooter}>
                 <div className={styles.boxTitle}>{title}</div>
+            </div>
+        </div>
+    );
+}
+
+function StatsBox({ title, stat }: { title: string; stat: number }) {
+
+    const modifier = Math.floor((stat - 10) / 2);
+    const modDisplay = modifier >= 0 ? `+${modifier}` : modifier;
+
+    return (
+        <div className={styles.statBox}>
+            <div className={styles.statTitle}>{title.toUpperCase()}</div>
+            <div className={styles.statModifier}>{modDisplay}</div>
+            <div className={styles.statValueContainer}>
+                <div className={styles.statValue}>{stat}</div>
             </div>
         </div>
     );

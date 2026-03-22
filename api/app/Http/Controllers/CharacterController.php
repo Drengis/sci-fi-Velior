@@ -29,7 +29,6 @@ class CharacterController extends BaseController
     protected function getValidationRules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:45',
             'class' => 'nullable|string|max:45',
             'race' => 'nullable|string|max:45',
@@ -38,6 +37,12 @@ class CharacterController extends BaseController
             'ideals' => 'nullable|string|max:255',
             'attachments' => 'nullable|string|max:255',
             'weaknesses' => 'nullable|string|max:255',
+            'strength' => 'nullable|integer|min:1|max:30',
+            'dexterity' => 'nullable|integer|min:1|max:30',
+            'constitution' => 'nullable|integer|min:1|max:30',
+            'intelligence' => 'nullable|integer|min:1|max:30',
+            'wisdom' => 'nullable|integer|min:1|max:30',
+            'charisma' => 'nullable|integer|min:1|max:30',
         ];
     }
 
@@ -112,6 +117,12 @@ class CharacterController extends BaseController
      */
     public function show(int $id, Request $request): JsonResponse
     {
+        $character = $this->service->getById($id);
+
+        if ($character->user_id !== auth()->id()) {
+            return $this->errorResponse('Forbidden: You do not own this character', 403);
+        }
+
         return parent::show($id, $request);
     }
 
@@ -132,7 +143,13 @@ class CharacterController extends BaseController
      *             @OA\Property(property="traits", type="string", example="Impulsive, brave"),
      *             @OA\Property(property="ideals", type="string", example="Freedom"),
      *             @OA\Property(property="attachments", type="string", example="Old amulet"),
-     *             @OA\Property(property="weaknesses", type="string", example="Overconfidence")
+     *             @OA\Property(property="weaknesses", type="string", example="Overconfidence"),
+     *             @OA\Property(property="strength", type="integer", example=10),
+     *             @OA\Property(property="dexterity", type="integer", example=10),
+     *             @OA\Property(property="constitution", type="integer", example=10),
+     *             @OA\Property(property="intelligence", type="integer", example=10),
+     *             @OA\Property(property="wisdom", type="integer", example=10),
+     *             @OA\Property(property="charisma", type="integer", example=10)
      *         )
      *     ),
      *     @OA\Response(
@@ -155,7 +172,12 @@ class CharacterController extends BaseController
      */
     public function store(Request $request): JsonResponse
     {
-        return parent::store($request);
+        $validatedData = $this->validate($request, $this->getValidationRules());
+        $validatedData['user_id'] = auth()->id();
+
+        $item = $this->service->create($validatedData);
+
+        return $this->createdResponse($item);
     }
 
     /**
@@ -189,6 +211,12 @@ class CharacterController extends BaseController
      */
     public function update(Request $request, int $id): JsonResponse
     {
+        $character = $this->service->getById($id);
+
+        if ($character->user_id !== auth()->id()) {
+            return $this->errorResponse('Forbidden: You do not own this character', 403);
+        }
+
         return parent::update($request, $id);
     }
 
@@ -212,6 +240,12 @@ class CharacterController extends BaseController
      */
     public function destroy(int $id): JsonResponse
     {
+        $character = $this->service->getById($id);
+
+        if ($character->user_id !== auth()->id()) {
+            return $this->errorResponse('Forbidden: You do not own this character', 403);
+        }
+
         return parent::destroy($id);
     }
 
@@ -247,6 +281,10 @@ class CharacterController extends BaseController
      */
     public function getByUser(int $userId, Request $request)
     {
+        if ($userId !== auth()->id()) {
+            return $this->errorResponse('Forbidden: Access to other user characters is denied', 403);
+        }
+
         $perPage = $request->input('per_page', 15);
         $relations = $request->input('with', []);
 
