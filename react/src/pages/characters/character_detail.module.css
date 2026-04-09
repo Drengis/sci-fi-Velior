@@ -98,8 +98,14 @@
 /* Content Styles */
 .mainContent {
     display: grid;
-    grid-template-columns: 320px 1fr;
+    grid-template-columns: auto 1fr;
     gap: 2.5rem;
+}
+
+.leftColumn {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
 }
 
 @media (max-width: 768px) {

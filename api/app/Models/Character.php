@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\StaticSkills;
 
 /**
  * @OA\Schema(
@@ -51,6 +52,7 @@ class Character extends Model
         'intelligence',
         'wisdom',
         'charisma',
+        'proficiency_bonus',
     ];
 
     public $timestamps = true;
@@ -60,9 +62,14 @@ class Character extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Расчет модификатора характеристики
-     */
+
+    public function skills()
+    {
+        return $this->belongsToMany(StaticSkills::class, 'characters_skills', 'character_id', 'static_skill_id')
+                    ->withPivot('is_proficient', 'is_expert')
+                    ->withTimestamps();
+    }
+ 
     public static function getModifier(int $score): int
     {
         return floor(($score - 10) / 2);

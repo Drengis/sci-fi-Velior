@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CharacterService;
+use App\Services\CharactersSkillsService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -15,10 +16,12 @@ use Illuminate\Http\JsonResponse;
 class CharacterController extends BaseController
 {
     protected CharacterService $service;
+    protected CharactersSkillsService $charactersSkillsService;
 
-    public function __construct(CharacterService $service)
+    public function __construct(CharacterService $service, CharactersSkillsService $charactersSkillsService)
     {
         $this->service = $service;
+        $this->charactersSkillsService = $charactersSkillsService;
     }
 
     protected function getService()
@@ -43,6 +46,10 @@ class CharacterController extends BaseController
             'intelligence' => 'nullable|integer|min:1|max:30',
             'wisdom' => 'nullable|integer|min:1|max:30',
             'charisma' => 'nullable|integer|min:1|max:30',
+            'skills' => 'nullable|array',
+            'skills.*.id' => 'required|integer|exists:static_skills,id',
+            'skills.*.is_proficient' => 'boolean',
+            'skills.*.is_expert' => 'boolean',
         ];
     }
 
@@ -119,11 +126,17 @@ class CharacterController extends BaseController
     {
         $character = $this->service->getById($id);
 
-        if ($character->user_id !== auth()->id()) {
-            return $this->errorResponse('Forbidden: You do not own this character', 403);
+        if (!$character) {
+            return $this->errorResponse('Character not found', 404);
         }
 
-        return parent::show($id, $request);
+        if ($character->user_id !== auth()->id()) {
+            return $this->errorResponse('Forbidden', 403);
+        }
+
+        $character->setAttribute('calculated_skills', $this->charactersSkillsService->getCharacterSkillsWithValues($character));
+
+        return $this->successResponse($character);
     }
 
     /**
@@ -177,7 +190,14 @@ class CharacterController extends BaseController
 
         $item = $this->service->create($validatedData);
 
-        return $this->createdResponse($item);
+        if (isset($validatedData['skills'])) {
+            $this->charactersSkillsService->syncSkills($item, $validatedData['skills']);
+        }
+
+        $character = $this->service->getById($item->id);
+        $character->setAttribute('calculated_skills', $this->charactersSkillsService->getCharacterSkillsWithValues($character));
+
+        return $this->createdResponse($character);
     }
 
     /**
@@ -209,15 +229,31 @@ class CharacterController extends BaseController
      *     )
      * )
      */
-    public function update(Request $request, int $id): JsonResponse
+   public function update(Request $request, int $id): JsonResponse
     {
         $character = $this->service->getById($id);
 
-        if ($character->user_id !== auth()->id()) {
-            return $this->errorResponse('Forbidden: You do not own this character', 403);
+        if (!$character) {
+            return $this->errorResponse('Character not found', 404);
         }
 
-        return parent::update($request, $id);
+        if ($character->user_id !== auth()->id()) {
+            return $this->errorResponse('Forbidden', 403);
+        }
+
+        $validatedData = $this->validate($request, $this->getValidationRules());
+
+        if (isset($validatedData['skills'])) {
+            $this->charactersSkillsService->syncSkills($character, $validatedData['skills']);
+            unset($validatedData['skills']);
+        }
+
+        $this->service->update($id, $validatedData);
+
+        $updatedCharacter = $this->service->getById($id);
+        $updatedCharacter->setAttribute('calculated_skills', $this->charactersSkillsService->getCharacterSkillsWithValues($updatedCharacter));
+
+        return $this->successResponse($updatedCharacter);
     }
 
     /**

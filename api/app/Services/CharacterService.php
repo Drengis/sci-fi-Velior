@@ -15,11 +15,18 @@ class CharacterService extends BaseService
     }
 
     /**
-     * Можно добавить специфические методы для персонажей
+     * Получить персонажа по ID с рассчитанными навыками
      */
+    public function getById(int $id, array $relations = []): Character
+    {
+        /** @var Character $character */
+        $character = parent::getById($id, $relations);
+
+        return $character;
+    }
 
     /**
-     * Получить всех персонажей конкретного пользователя
+     * Получить всех персонажей конкретного пользов ателя
      */
     public function getByUserId(int $userId, array $relations = [], bool $paginate = false, int $perPage = 15)
     {

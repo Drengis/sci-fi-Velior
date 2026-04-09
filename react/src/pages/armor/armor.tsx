@@ -11,8 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Button } from "@/components/ui/button";
-
 import { staticApi } from "../../api/static.api";
 import type { ArmorDto } from "../../dto/static.dto";
 
@@ -50,7 +48,7 @@ export default function Armor() {
             <TableHead>Название</TableHead>
             <TableHead>Описание</TableHead>
             <TableHead>Слоты улучшений</TableHead>
-            <TableHead>Действие</TableHead>
+            {/* <TableHead>Действие</TableHead> */}
           </TableRow>
         </TableHeader>
 
@@ -60,11 +58,11 @@ export default function Armor() {
               <TableCell>{armor.name}</TableCell>
               <TableCell>{armor.description}</TableCell>
               <TableCell>{armor.upgrade_slots}</TableCell>
-              <TableCell>
+              {/* <TableCell>
                 <Button variant="outline" size="sm">
                   Подробнее
                 </Button>
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>
